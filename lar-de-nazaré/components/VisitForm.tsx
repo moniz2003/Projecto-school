@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { CalendarCheck, User, Mail, MessageSquare, Send, Loader2 } from 'lucide-react';
 
+// ⚠️ CONFIRME O CAMINHO E A PASTA NO SEU XAMPP
+const API_ENDPOINT = "http://localhost/lar_nazare/submit.php";
+
 const VisitForm: React.FC = () => {
     const [formData, setFormData] = useState({ name: '', email: '', subject: 'Visita', message: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -10,28 +13,36 @@ const VisitForm: React.FC = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        setStatus('idle');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  setStatus("idle");
 
-        // Simulação de envio de formulário para um backend
-        console.log("A enviar dados:", formData);
-        
-        try {
-            // Aqui você integraria com um serviço como Formspree, Netlify Forms ou um endpoint de backend
-            await new Promise(resolve => setTimeout(resolve, 2000)); 
-            
-            setStatus('success');
-            setFormData({ name: '', email: '', subject: 'Visita', message: '' });
-        } catch (error) {
-            setStatus('error');
-            console.error("Erro no envio:", error);
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+  const formDataObj = new FormData();
+  formDataObj.append("name", formData.name);
+  formDataObj.append("email", formData.email);
+  formDataObj.append("subject", formData.subject);
+  formDataObj.append("message", formData.message);
 
+  try {
+    const response = await fetch(API_ENDPOINT, {
+      method: "POST",
+      body: formDataObj,
+    });
+
+    if (response.ok) {
+      setStatus("success");
+      setFormData({ name: "", email: "", subject: "Visita", message: "" });
+    } else {
+      setStatus("error");
+    }
+  } catch (error) {
+    setStatus("error");
+    console.error("Erro:", error);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
     return (
         <section id="visita" className="py-20 bg-gray-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -45,7 +56,8 @@ const VisitForm: React.FC = () => {
 
                 <div className="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-brand-100">
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Tipo de Contacto */}
+                        
+                        {/* 1. Tipo de Contacto */}
                         <div>
                             <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
                                 Propósito do Contacto
@@ -67,9 +79,10 @@ const VisitForm: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Nome */}
+                        {/* 2. Nome */}
                         <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 sr-only">Nome Completo</label>
+                            {/* Removido 'sr-only' e adicionado mb-2 */}
+                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
                             <div className="relative">
                                 <User size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-brand-400" />
                                 <input
@@ -86,9 +99,10 @@ const VisitForm: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Email */}
+                        {/* 3. Email */}
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 sr-only">Email</label>
+                            {/* Removido 'sr-only' e adicionado mb-2 */}
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                             <div className="relative">
                                 <Mail size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-brand-400" />
                                 <input
@@ -105,9 +119,10 @@ const VisitForm: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Mensagem */}
+                        {/* 4. Mensagem */}
                         <div>
-                            <label htmlFor="message" className="block text-sm font-medium text-gray-700 sr-only">Mensagem</label>
+                            {/* Removido 'sr-only' e adicionado mb-2 */}
+                            <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">Mensagem</label>
                             <div className="relative">
                                 <MessageSquare size={20} className="absolute left-3 top-4 text-brand-400" />
                                 <textarea
@@ -122,33 +137,21 @@ const VisitForm: React.FC = () => {
                                 />
                             </div>
                         </div>
-
-                        {/* Botão de Envio */}
+                        
+                        {/* Botão de Envio e Estado */}
                         <button
                             type="submit"
                             disabled={isSubmitting}
                             className="w-full flex justify-center items-center gap-2 px-6 py-3 border border-transparent text-base font-bold rounded-xl shadow-sm text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
-                            {isSubmitting ? (
-                                <Loader2 size={20} className="animate-spin" />
-                            ) : (
-                                <Send size={20} />
-                            )}
+                            {isSubmitting ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
                             {isSubmitting ? 'A Enviar...' : 'Enviar Pedido de Contacto'}
                         </button>
                     </form>
-
+                    
                     {/* Mensagens de Estado */}
-                    {status === 'success' && (
-                        <div className="mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-center font-semibold">
-                            ✅ O seu pedido foi enviado com sucesso! Entraremos em contacto brevemente.
-                        </div>
-                    )}
-                    {status === 'error' && (
-                        <div className="mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center font-semibold">
-                            ❌ Ocorreu um erro ao enviar o seu pedido. Por favor, tente novamente ou ligue-nos.
-                        </div>
-                    )}
+                    {status === 'success' && (<div className="mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-center font-semibold">✅ O seu pedido foi enviado com sucesso! Entraremos em contacto brevemente.</div>)}
+                    {status === 'error' && (<div className="mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center font-semibold">❌ Ocorreu um erro ao enviar o seu pedido. Por favor, tente novamente ou ligue-nos.</div>)}
                 </div>
             </div>
         </section>

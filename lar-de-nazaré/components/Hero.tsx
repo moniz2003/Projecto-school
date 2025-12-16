@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
                 <img
                     className="w-full h-full object-cover"
                     // ==================================================
-                    // 🎯 ALTERADO PARA A IMAGEM LOCAL
+                    //  ALTERADO PARA A IMAGEM LOCAL
                     // ==================================================
                     src={heroImageLocal} 
                     alt="Crianças a brincar"

@@ -9,7 +9,8 @@ const navItems: NavItem[] = [
     { label: 'Home', href: '#home' },
     { label: 'Quem Somos', href: '#quem-somos' },
     { label: 'Actividades', href: '#actividades' },
-    { label: 'Transparência', href: '#transparencia' },
+    // 🛑 REMOVIDO: Transparência
+    // { label: 'Transparência', href: '#transparencia' }, 
     { label: 'Agendar Visita', href: '#visita' },
     { label: 'Contactos', href: '#contactos' },
 ];
@@ -27,7 +28,7 @@ const Navbar: React.FC = () => {
                         <a href="#home" className="flex-shrink-0 flex items-center gap-2">
                             
                             {/* ================================================== */}
-                            {/* 🎯 LOGO - Fundo removido e tamanho RETORNADO para w-6 h-6 (24px) para estabilidade. */}
+                            {/* 🎯 LOGO */}
                             {/* ================================================== */}
                             <div className="p-2 rounded-full flex items-center justify-center"> 
                                 <img 
@@ -44,6 +45,7 @@ const Navbar: React.FC = () => {
                     
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center space-x-6">
+                        {/* O loop map aqui garante que apenas os itens restantes serão exibidos */}
                         {navItems.map((item) => (
                             <a
                                 key={item.label}
@@ -81,6 +83,7 @@ const Navbar: React.FC = () => {
             {/* Mobile Menu Panel */}
             <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>
                 <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    {/* O loop map aqui garante que apenas os itens restantes serão exibidos */}
                     {navItems.map((item) => (
                         <a
                             key={item.label}

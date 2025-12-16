@@ -1,32 +1,24 @@
 import React from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import About from './components/About';
-import Activities from './components/Activities';
-import Transparency from './components/Transparency';
-import Donate from './components/Donate';
-import VisitForm from './components/VisitForm';
-import News from './components/News';
-import Footer from './components/Footer';
-import ChatAssistant from './components/ChatAssistant';
+import AdminPanel from './components/AdminPanel'; // IMPORTAÇÃO
 
-const App: React.FC = () => {
+function App() {
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Activities />
-        <Transparency />
-        <Donate />
-        <News />
-        <VisitForm />
-      </main>
+    // 🛑 Substitua o seu conteúdo existente pelo Painel de Administração para testar
+    <AdminPanel />
+    
+    // Quando terminar o teste, pode voltar a colocar os seus componentes originais
+    /*
+    <div className="App">
+      <Header />
+      <Hero />
+      <About />
+      <Activities />
+      <Donation />
+      <Contact />
       <Footer />
-      <ChatAssistant />
     </div>
+    */
   );
-};
+}
 
 export default App;
